@@ -16,7 +16,7 @@ for filename in accounts/*; do
 		report="reports/$1_$currentmonth.csv"
 		
 		rm -rf $report;
-		echo "app_id,app_name,payment_type,product_type,recv_currency,recv_amount,fx_batch_id,fx_rate,settle_currency,settle_amount,tax_amount" >> $report
+		echo "date,app_id,app_name,payment_type,product_type,recv_currency,recv_amount,fx_batch_id,fx_rate,settle_currency,settle_amount,tax_amount" >> $report
 
 		until [ "$currentdate" == "$loopenddate" ]
 		do
@@ -29,7 +29,7 @@ for filename in accounts/*; do
 		  		unzip -o -d dirty_reports/ $n
 				rm $n
 				start=$(grep -n ',payment_digest$' dirty_reports/$2_digest_$currentdate.csv | cut -d : -f 1);
-				cat "dirty_reports/$2_digest_$currentdate.csv" |  cut -d, -f2- | tail -n +$(($start+2)) | head -n -2 >> $report;
+				cat "dirty_reports/$2_digest_$currentdate.csv" |  cut -d, -f2- | tail -n +$(($start+2)) | head -n -2 | sed -e "s/^/$currentdate,/" >> $report;
 			fi
 		  	currentdate=$(/bin/date --date "$currentdate 1 day" +%Y-%m-%d)
 		done

@@ -1,7 +1,6 @@
 #!/bin/bash
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-echo $DIR
 for filename in $DIR/accounts/*; do
 	echo $filename
 	s=$(<$filename)
